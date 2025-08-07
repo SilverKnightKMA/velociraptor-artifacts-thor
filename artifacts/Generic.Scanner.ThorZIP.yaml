@@ -64,11 +64,7 @@ sources:
           then={SELECT * FROM execve(argv=["chmod", "+x", Executable[0].F])}
         )
 
-        LET Exec <= SELECT * FROM execve(argv=array(
-          a=[(Executable[0]).F, "--json", "-e", TmpDir], 
-          b=[if(condition= CMDLine = "" OR CMDLine = "." OR CMDLine = " ", then=[], else=(CMDs[0]).C)]
-          )
-        )
+        LET Exec <= SELECT * FROM execve(argv=[(Executable[0]).F, "--json", "-e", TmpDir])
 
         LET Uploaded <= SELECT Name, upload(file=OSPath) as FileDetails FROM glob(globs="/*", root=TmpDir) WHERE Name =~ "(csv|txt|html|json)$"
 
